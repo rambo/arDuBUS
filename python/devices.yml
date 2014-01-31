@@ -1,0 +1,471 @@
+# Note: Changing pin numbers or order of pins requires a sketch re(generate,compile,upload), changing aliases needs only reload of arDuBUS
+aliases_test_board:
+    digital_in_pins: # pins passed to ARDUBUS_DIGITAL_INPUTS
+        - pin: 2
+          alias: moo
+        - pin: 3
+          alias: pai
+        - pin: 4
+          alias: laa-laa
+        - pin: 5
+          alias: Matrix reloaded
+        - pin: 6
+        - pin: 7
+    pca9535_inputs: [  5, 6, 7, 8, 9, 10 ] # defined just to test the normalizing
+fake_reactor_lid: # This is not an actual ardubus board but one with matrix keyboard and code to emulate plain inputs
+    digital_in_pins: 
+        - pin: 0
+          alias: rod_0_0_stomp
+        - pin: 1
+          alias: rod_1_0_stomp
+        - pin: 2
+          alias: rod_2_0_stomp
+        - pin: 3
+          alias: rod_3_0_stomp
+        - pin: 4
+          alias: rod_4_0_stomp
+        - pin: 5
+          alias: rod_5_0_stomp
+        - pin: 6
+          alias: rod_6_0_stomp
+        - pin: 7
+          alias: rod_0_1_stomp
+        - pin: 8
+          alias: rod_1_1_stomp
+        - pin: 9
+          alias: rod_2_1_stomp
+        - pin: 10
+          alias: rod_3_1_stomp
+        - pin: 11
+          alias: rod_4_1_stomp
+        - pin: 12
+          alias: rod_5_1_stomp
+        - pin: 13
+          alias: rod_6_1_stomp
+        - pin: 14
+          alias: rod_0_2_stomp
+        - pin: 15
+          alias: rod_1_2_stomp
+        - pin: 16
+          alias: rod_2_2_stomp
+        - pin: 17
+          alias: rod_3_2_stomp
+        - pin: 18
+          alias: rod_4_2_stomp
+        - pin: 19
+          alias: rod_5_2_stomp
+        - pin: 20
+          alias: rod_6_2_stomp
+        - pin: 21
+          alias: rod_0_3_stomp
+        - pin: 22
+          alias: rod_1_3_stomp
+        - pin: 23
+          alias: rod_2_3_stomp
+        - pin: 24
+          alias: rod_3_3_stomp
+        - pin: 25
+          alias: rod_4_3_stomp
+        - pin: 26
+          alias: rod_5_3_stomp
+        - pin: 27
+          alias: rod_6_3_stomp
+        - pin: 28
+          alias: rod_0_4_stomp
+        - pin: 29
+          alias: rod_1_4_stomp
+        - pin: 30
+          alias: rod_2_4_stomp
+        - pin: 31
+          alias: rod_3_4_stomp
+        - pin: 32
+          alias: rod_4_4_stomp
+        - pin: 33
+          alias: rod_5_4_stomp
+        - pin: 34
+          alias: rod_6_4_stomp
+        - pin: 35
+          alias: rod_0_5_stomp
+        - pin: 36
+          alias: rod_1_5_stomp
+        - pin: 37
+          alias: rod_2_5_stomp
+        - pin: 38
+          alias: rod_3_5_stomp
+        - pin: 39
+          alias: rod_4_5_stomp
+        - pin: 40
+          alias: rod_5_5_stomp
+        - pin: 41
+          alias: rod_6_5_stomp
+        - pin: 42
+          alias: rod_0_6_stomp
+        - pin: 43
+          alias: rod_1_6_stomp
+        - pin: 44
+          alias: rod_2_6_stomp
+        - pin: 45
+          alias: rod_3_6_stomp
+        - pin: 46
+          alias: rod_4_6_stomp
+        - pin: 47
+          alias: rod_5_6_stomp
+        - pin: 48
+          alias: rod_6_6_stomp
+reactor_lid:
+    digital_in_pins: # Rod stomp inputs (used as digital inputs)
+        - pin: 22
+          alias: rod_4_3_stomp
+        - pin: 23
+          alias: rod_2_1_stomp
+        - pin: 24
+          alias: rod_3_3_stomp
+        - pin: 25
+          alias: pin_25
+        - pin: 26
+          alias: rod_5_3_stomp
+        - pin: 27
+          alias: rod_3_2_stomp
+        - pin: 28
+          alias: rod_3_0_stomp
+        - pin: 29
+          alias: pin_29
+        - pin: 30
+          alias: rod_2_2_stomp
+        - pin: 31
+          alias: rod_3_5_stomp
+        - pin: 32
+          alias: rod_2_4_stomp
+        - pin: 33
+          alias: pin_33
+        - pin: 34
+          alias: rod_6_2_stomp
+        - pin: 35
+          alias: pin_35
+        - pin: 36
+          alias: rod_2_0_stomp
+        - pin: 37
+          alias: pin_37
+        - pin: 38
+          alias: rod_3_1_stomp
+        - pin: 39
+          alias: pin_39
+        - pin: 40
+          alias: rod_1_3_stomp
+        - pin: 41
+          alias: rod_2_6_stomp
+        - pin: 42
+          alias: rod_4_2_stomp
+        - pin: 43
+          alias: pin_43
+        - pin: 44
+          alias: rod_5_1_stomp
+        - pin: 45
+          alias: rod_2_3_stomp
+        - pin: 46
+          alias: rod_5_2_stomp
+        - pin: 47
+          alias: pin_47
+        - pin: 48
+          alias: rod_3_4_stomp
+        - pin: 49
+          alias: rod_3_6_stomp
+        - pin: 50
+          alias: rod_4_0_stomp
+        - pin: 51
+          alias: pin_51
+        - pin: 52
+          alias: rod_4_4_stomp
+        - pin: A15
+          alias: rod_0_2_stomp
+        - pin: A14
+          alias: rod_1_1_stomp
+        - pin: A13
+          alias: rod_1_4_stomp
+        - pin: A12
+          alias: rod_6_4_stomp
+        - pin: A11
+          alias: rod_0_3_stomp
+        - pin: A10
+          alias: rod_4_6_stomp
+        - pin: A9
+          alias: rod_0_4_stomp
+        - pin: A8
+          alias: rod_1_5_stomp
+        - pin: A7
+          alias: rod_5_5_stomp
+        - pin: A6
+          alias: rod_4_5_stomp
+        - pin: A5
+          alias: rod_6_3_stomp
+        - pin: A4
+          alias: pin_A4
+    digital_pwmout_pins: [ 13, 12, 11, 10, 9 ] # Controls for smoke machine and 4 fans
+rod_control_panel: # The board identifier
+    i2cascii_boards:
+        - address: 9 # mwdisplay.ino
+          chars: 5
+    aircore_boards: [ 4, 5, 6, 7, 8 ]
+    aircore_correction_values:
+        0: #index of the board list
+            0: 164 # number of channel on driver
+            1: 225
+            3: 30
+            4: 180
+            5: 120
+            6: 27
+            7: 70
+        1:
+            0: 100
+            1: 240
+            3: 140
+            4: 230
+            5: 180
+            7: 10
+        2:
+            0: 110
+            1: 140
+            2: 120
+            3: 130
+            4: 200
+            5: 220
+            6: 220
+            7: 130
+        3:
+            0: 10
+            1: 150
+            3: 70
+            4: 80
+            5: 220
+            6: 0
+        4:
+            0: 70
+            1: 200
+            2: 80
+            3: 150
+            5: 0
+            7: 170
+    pca9635RGBJBOL_boards: [ 0, 1 ] # Board addresses (aka ARDUBUS_PCA9635RGBJBOL_BOARDS)
+    pca9635RGBJBOL_maps:
+        0: # board address, upper "rod" leds
+            0: 22 # key is the requested index, value is the real index to send to the Arduino
+            1: 11
+            2: 23
+            3: 8
+            4: 20
+            5: 9
+            6: 32
+            7: 10
+            8: 30
+            9: 3
+            10: 17
+            11: 6
+            12: 18
+            13: 7
+            14: 19
+            15: 24
+            16: 43
+            17: 15
+            18: 4
+            19: 16
+            20: 5
+            21: 44
+            22: 25
+            23: 37
+            24: 26
+            25: 12
+            26: 1
+            27: 13
+            28: 2
+            29: 41
+            30: 29
+            31: 28
+            32: 38
+            33: 0
+            34: 40
+            35: 31
+            36: 27
+        1: # gauge led-clusters
+            0: 11 # lower left, green
+            1: 10
+            2: 8
+            3: 7
+            4: 23 # red
+            5: 22 
+            6: 20
+            7: 19
+            8: 16 # upper left, green
+            9: 15 
+            10: 14 
+            11: 1
+            12: 4 # red
+            13: 3
+            14: 2 
+            15: 13 
+            16: 35 # lower right, green
+            17: 34
+            18: 33
+            19: 32 # also 29 (short)
+            20: 47 # red
+            21: 46
+            22: 30
+            23: 44
+            24: 28 # upper right, green
+            25: 37
+            26: 38
+            27: 40
+            28: 24 # red
+            29: 25
+            30: 26
+            31: 27
+    pca9535_boards: [ 0 ] # list of board addresses  (aka ARDUBUS_PCA9535_BOARDS)
+    pca9535_inputs: # pins passed to ARDUBUS_PCA9535_INPUTS
+        - pin: 0
+          alias: SCRAM
+        - pin: 1
+          alias: RESET
+        - pin: 2
+          alias: rod_6_2_up
+        - pin: 3
+          alias: rod_6_2_down
+        - pin: 4
+          alias: TURBO
+        - pin: 5
+          alias: rodcontrol_unused_input_p5
+        - pin: 6
+          alias: rodcontrol_unused_input_p6
+        - pin: 7
+          alias: rodcontrol_unused_input_p7
+    # Make sure that there are *no* floating inputs, easy way is to define them as outputs
+    pca9535_outputs: [ 8, 9, 10, 11, 12, 13, 14, 15 ] # pins passed to ARDUBUS_PCA9535_OUTPUTS
+    digital_in_pins: # pins passed to ARDUBUS_DIGITAL_INPUTS
+        - pin: 2
+          alias: rod_4_4_down
+        - pin: 3
+          alias: rod_1_3_down
+        - pin: 4
+          alias: rod_4_0_down
+        - pin: 5
+          alias: rod_5_1_down
+        - pin: 6
+          alias: rod_4_2_down
+        - pin: 7
+          alias: rod_4_6_down
+        - pin: 8
+          alias: rod_2_2_down
+        - pin: 9
+          alias: rod_3_1_down
+        - pin: 10
+          alias: rod_0_2_down
+        - pin: 11
+          alias: rod_0_4_down
+        - pin: 12
+          alias: rodpin_12
+        - pin: 14
+          alias: rod_0_3_down
+        - pin: 15
+          alias: rod_3_0_down
+        - pin: 16
+          alias: rod_3_4_down
+        - pin: 17
+          alias: rod_3_6_down
+        - pin: 18
+          alias: rod_2_1_down
+        - pin: 19
+          alias: rod_1_4_down
+        - pin: 22
+          alias: rod_3_3_up
+        - pin: 23
+          alias: rod_5_5_up
+        - pin: 24
+          alias: rod_3_4_up
+        - pin: 25
+          alias: rod_4_3_up
+        - pin: 26
+          alias: rod_4_0_up
+        - pin: 27
+          alias: rod_6_3_up
+        - pin: 28
+          alias: rod_3_6_up # Suddenly gives no output, did the switch break just now ?? (yes, works intermittedly)
+        - pin: 29
+          alias: rod_3_5_up
+        - pin: 30
+          alias: rod_4_4_up
+        - pin: 31
+          alias: rod_4_6_up
+        - pin: 32
+          alias: rod_4_5_up
+        - pin: 33
+          alias: rod_5_2_up
+        - pin: 34
+          alias: rod_4_2_up
+        - pin: 35
+          alias: rod_5_3_up
+        - pin: 36
+          alias: rod_5_1_up
+        - pin: 37
+          alias: rod_6_4_up
+        - pin: 38
+          alias: rod_5_5_down
+        - pin: 39
+          alias: rod_4_3_down
+        - pin: 40
+          alias: rod_4_5_down
+        - pin: 41
+          alias: rod_5_3_down
+        - pin: 42
+          alias: rod_6_3_down
+        - pin: 43
+          alias: rod_2_3_down
+        - pin: 44
+          alias: rod_1_5_down
+        - pin: 45
+          alias: rod_2_0_down
+        - pin: 46
+          alias: rod_5_2_down
+        - pin: 47
+          alias: rod_2_6_down
+        - pin: 48
+          alias: rod_3_3_down
+        - pin: 49
+          alias: rod_2_4_down
+        - pin: 50
+          alias: rod_3_2_down
+        - pin: 51
+          alias: rod_1_1_down
+        - pin: 52
+          alias: rod_3_5_down
+        - pin: 53
+          alias: rod_6_4_down
+        - pin: A0
+          alias: rod_1_1_up
+        - pin: A1
+          alias: rod_3_2_up
+        - pin: A2
+          alias: rod_1_5_up
+        - pin: A3
+          alias: rod_2_1_up
+        - pin: A4
+          alias: rod_1_4_up
+        - pin: A5
+          alias: rod_0_3_up
+        - pin: A6
+          alias: rod_0_4_up
+        - pin: A7
+          alias: rod_0_2_up
+        - pin: A8
+          alias: rod_2_6_up
+        - pin: A9
+          alias: rod_2_0_up
+        - pin: A10
+          alias: rod_3_0_up
+        - pin: A11
+          alias: rod_1_3_up
+        - pin: A12
+          alias: rod_2_4_up
+        - pin: A13
+          alias: rod_3_1_up
+        - pin: A14
+          alias: rod_2_3_up
+        - pin: A15
+          alias: rod_2_2_up
