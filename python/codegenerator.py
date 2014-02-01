@@ -32,6 +32,7 @@ class codegen:
     def add_bounce_include(self, code):
         if self.bounce_included:
             return code
+        # TODO: Rewrite for Bounce2
         code += """// Get this from http://playground.arduino.cc/code/bounce\n"""
         code += """#include <Bounce.h>\n"""
         self.bounce_included = True
@@ -75,6 +76,9 @@ class codegen:
             ret += """#define ARDUBUS_DIGITAL_INPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_in_pins'])))
         if self.config.has_key('digital_out_pins'):
             ret += """#define ARDUBUS_DIGITAL_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_out_pins'])))
+        if self.config.has_key('servo_pins'):
+            ret += """#include <Servo.h>\n"""
+            ret += """#define ARDUBUS_SERVO_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['servo_pins'])))
         if self.config.has_key('digital_pwmout_pins'):
             ret += """#define ARDUBUS_PWM_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_pwmout_pins'])))
         if self.config.has_key('pca9535_boards'):

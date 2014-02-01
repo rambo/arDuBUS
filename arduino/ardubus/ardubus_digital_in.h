@@ -1,12 +1,13 @@
 #ifndef ardubus_digital_in_h
 #define ardubus_digital_in_h
 #include <Arduino.h> 
+// TODO: Rewrite for Bounce2
 #include <Bounce.h>
 #ifndef ARDUBUS_DIGITAL_IN_DEBOUNCE_TIME
 #define ARDUBUS_DIGITAL_IN_DEBOUNCE_TIME 20 // milliseconds, see Bounce library
 #endif
 #ifndef ARDUBUS_DIGITAL_IN_DEBOUNCE_UPDATE_TIME
-#define ARDUBUS_DIGITAL_IN_DEBOUNCE_UPDATE_TIME 5 // Milliseconds, how often to call update() on the deardubus_digital_in_bouncers, see Bounce library
+#define ARDUBUS_DIGITAL_IN_DEBOUNCE_UPDATE_TIME 5 // Milliseconds, how often to call update() on the ardubus_digital_in_update
 #endif
 
 

@@ -12,6 +12,11 @@ aliases_test_board:
         - pin: 6
         - pin: 7
     pca9535_inputs: [  5, 6, 7, 8, 9, 10 ] # defined just to test the normalizing
+    servo_pins: # pins passed to ARDUBUS_SERVO_OUTPUTS
+        - pin: 2
+          alias: tilt
+        - pin: 3
+          alias: pan
 fake_reactor_lid: # This is not an actual ardubus board but one with matrix keyboard and code to emulate plain inputs
     digital_in_pins: 
         - pin: 0
