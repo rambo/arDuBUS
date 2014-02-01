@@ -220,6 +220,20 @@ class ardubus(service.baseclass):
         #print "SIGNALLING: Analog-pin(index) %d has been %d for %dms on %s" % (p_index, value, time, sender)
         pass
 
+    @dbus.service.signal('fi.hacklab.ardubus')
+    def servoin_change(self, p_index, value, sender):
+        #print "SIGNALLING: servo-pin(index) %d changed to %d on %s" % (p_index, value, sender)
+        # This might not work, the other aliased signals are booleans...
+        if self.config['servo_input_pins'][p_index]['alias']:
+            self.alias_report(self.config['servo_input_pins'][p_index]['alias'], value, time, sender)
+        pass
+
+    @dbus.service.signal('fi.hacklab.ardubus')
+    def servoin_report(self, p_index, value, sender):
+        #print "SIGNALLING: servo-pin(index) %d changed to %d on %s" % (p_index, value, sender)
+        pass
+
+
     @dbus.service.method('fi.hacklab.ardubus')
     def reset(self):
         self.serial_port.setDTR(False) # Reset the arduino by driving DTR for a moment (RS323 signals are active-low)
@@ -255,6 +269,12 @@ class ardubus(service.baseclass):
                 pass
             if (self.input_buffer[:2] == 'CA'):
                 self.aio_change(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
+                pass
+            if (self.input_buffer[:2] == 'CS'):
+                self.servoin_change(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
+                pass
+            if (self.input_buffer[:2] == 'RS'):
+                self.servoin_report(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
                 pass
             if (self.input_buffer[:2] == 'RA'):
                 self.aio_report(ord(input_buffer[2]), int(input_buffer[3:7], 16), int(input_buffer[6:15], 16), self.object_name)
