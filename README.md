@@ -7,6 +7,8 @@ Arduino DBUS (and soon ZMQ) bridge in Python
 
     sudo apt-get install python python-yaml python-dbus
 
+Also install <https://github.com/rambo/python-dbushelpers>
+
 ### Installing the Arduino library
 
 copy the `ardubus` directory (under "arduino") to your Arduino libraries (usually sketchbook/libraries/)
