@@ -12,7 +12,7 @@ import binascii,time
 # TODO: Use hex encoded values everywhere to avoid this
 PIN_OFFSET=32 
 
-class ardubus(service.baseclass):
+class ardubus(dbushelpers.service.baseclass):
     def __init__(self, config, launcher_instance, **kwargs):
         super(ardubus, self).__init__(config, launcher_instance, **kwargs)
         self.object_name = kwargs['device_name']
