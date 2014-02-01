@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import with_statement
 import sys,os
 import yaml
@@ -31,26 +32,34 @@ class codegen:
     def add_bounce_include(self, code):
         if self.bounce_included:
             return code
-        code += """#include <Bounce.h> // For some weird reason including this in the relevant .h file does not work\n"""
+        code += """// Get this from http://playground.arduino.cc/code/bounce\n"""
+        code += """#include <Bounce.h>\n"""
         self.bounce_included = True
         return code
 
     def add_i2c_include(self, code):
         if self.i2c_included:
             return code
-        code += """#include <I2C.h> // For some weird reason including this in the relevant .h file does not work\n"""
+        code += """// Get this from https://github.com/rambo/I2C\n"""
+        code += """#include <I2C.h>\n"""
         self.i2c_included = True
         return code
 
     def add_i2c_device_include(self, code):
         if self.i2c_device_included:
             return code
-        code += """#include <i2c_device.h> // For some weird reason including this in the relevant .h file does not work\n"""
+        code += """// Get this from https://github.com/rambo/i2c_device\n"""
+        code += """#include <i2c_device.h>\n"""
         self.i2c_device_included = True
         return code
 
     def generate_code(self):
-        ret = ""
+        ret = """/**
+ * This code is automatically generated, edit at your own risk.
+ *
+ * Remember to install all the libraries we include, see the "Get this from" lines
+ */
+"""
         
         # Some state tracking
         self.setup_i2c_init =  False
@@ -85,7 +94,8 @@ class codegen:
                 ret += """#define ARDUBUS_PCA9535_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['pca9535_outputs'])))
 
             # This need to be included *after* the possible define of PCA9535_ENABLE_BOUNCE
-            ret += """#include <pca9535.h> // For some weird reason including this in the relevant .h file does not work\n"""
+            ret += """// Get this from https://github.com/rambo/pca9535\n"""
+            ret += """#include <pca9535.h>\n"""
         
         if self.config.has_key('pca9635RGBJBOL_boards'):
             self.setup_wake_pca9635 = True
@@ -93,9 +103,12 @@ class codegen:
             self.setup_i2c_init = True
             ret = self.add_i2c_include(ret)
             ret = self.add_i2c_device_include(ret)
-            ret += """#include <pca9635.h> // For some weird reason including this in the relevant .h file does not work
-#include <pca9635RGB.h> // For some weird reason including this in the relevant .h file does not work
-#include <pca9635RGBJBOL.h> // For some weird reason including this in the relevant .h file does not work\n"""
+            ret += """// Get this from https://github.com/rambo/pca9635\n"""
+            ret += """#include <pca9635.h>
+// Get this from https://github.com/rambo/pca9635RGB
+#include <pca9635RGB.h>
+// Get this from https://github.com/rambo/pca9635RGBJBOL
+#include <pca9635RGBJBOL.h>\n"""
             ret += """#define ARDUBUS_PCA9635RGBJBOL_BOARDS { %s }\n""" % ", ".join(map(str, self.config['pca9635RGBJBOL_boards']))
 
         if self.config.has_key('aircore_boards'):
@@ -111,7 +124,8 @@ class codegen:
             ret += """#define ARDUBUS_I2CASCII_BUFFER_SIZE %d\n""" % (max([ int(x['chars']) for x in self.config['i2cascii_boards'] ])+1)
 
 
-        ret += """\n#include <ardubus.h>
+        ret += """\n// Get this from https://github.com/rambo/arDuBUS\n"""
+        ret += """#include <ardubus.h>
 void setup()
 {
     Serial.begin(%s);
