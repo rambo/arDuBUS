@@ -3,6 +3,8 @@ arDuBUS
 
 Arduino DBUS (and soon ZMQ) bridge in Python
 
+Forked from <https://github.com/HelsinkiHacklab/reactor>
+
 ## Requirements
 
     sudo apt-get install python python-yaml python-dbus
