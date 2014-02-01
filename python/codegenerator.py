@@ -137,8 +137,8 @@ class codegen:
             ret += """#define ARDUBUS_I2CASCII_BUFFER_SIZE %d\n""" % (max([ int(x['chars']) for x in self.config['i2cascii_boards'] ])+1)
 
 
-        ret += """\n// Get this from https://github.com/rambo/arDuBUS\n"""
-        ret += """#include <ardubus.h>
+        ret += """\n// Get this from https://github.com/rambo/arDuBUS
+#include <ardubus.h>
 void setup()
 {
     Serial.begin(%s);
