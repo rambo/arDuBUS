@@ -22,7 +22,7 @@ class codegen:
         return ret
 
     def prepare_sketch_file(self):
-        self.sketch_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'generated', self.name)
+        self.sketch_dir = os.path.join(os.path.dirname(os.path.realpath(device_config_file)), 'generated', self.name)
         if not os.path.exists(self.sketch_dir):
             os.makedirs(self.sketch_dir)
         self.sketch_path = os.path.join(self.sketch_dir, self.name + '.ino')
@@ -180,9 +180,11 @@ void loop()
 
 if __name__ == '__main__':
     device_config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'devices.yml')
+    if len(sys.argv) > 1:
+        device_config_file = os.path.realpath(sys.argv[1])
     with open(device_config_file) as f:
         devices_config = yaml.load(f)
-    general_config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ardubus.yml')
+    general_config_file = os.path.join(os.path.dirname(os.path.realpath(device_config_file)), 'ardubus.yml')
     with open(general_config_file) as f:
         general_config = yaml.load(f)
     
