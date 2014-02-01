@@ -254,7 +254,7 @@ void ardubus_process_command()
     ardubus_i2cascii_process_command(ardubus_incoming_command);
 #endif
 #ifdef ARDUBUS_SERVO_INPUTS
-    ardubus_servo_in_process_command();
+    ardubus_servo_in_process_command(ardubus_incoming_command);
 #endif
 }
 

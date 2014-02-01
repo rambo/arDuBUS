@@ -64,7 +64,7 @@ inline void ardubus_servo_in_update()
     {
         if (ardubus_servo_in_inputs[i].new_data)
         {
-            calc_servo_position(&ardubus_servo_in_inputs[i]);
+            ardubus_servo_in_calc_servo_position(&ardubus_servo_in_inputs[i]);
             // TODO: output value
             Serial.print(F("CS")); // CS<index_byte><pulse_duration_in_us>
             Serial.write(i);
