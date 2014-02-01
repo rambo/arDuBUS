@@ -1,4 +1,7 @@
 python/generated/*
+ardubus.yml
+devices.yml
+
 
 *.py[cod]
 
