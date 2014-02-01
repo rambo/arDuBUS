@@ -2,6 +2,7 @@ python/generated/*
 ardubus.yml
 devices.yml
 
+._*
 
 *.py[cod]
 
