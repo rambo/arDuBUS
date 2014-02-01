@@ -1,3 +1,5 @@
+python/generated/*
+
 *.py[cod]
 
 # C extensions
