@@ -7,7 +7,11 @@ Forked from <https://github.com/HelsinkiHacklab/reactor>
 
 ## Requirements
 
-    sudo apt-get install python python-yaml python-dbus python-serial
+    sudo apt-get install python python-yaml python-dbus python-serial 
+
+On debian also
+
+    sudo apt-get install dbus-x11
 
 Also install <https://github.com/rambo/python-dbushelpers>
 

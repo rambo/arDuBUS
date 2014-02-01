@@ -124,7 +124,7 @@ class my_launcher(launcher.baseclass):
     def scan(self):
         """Scans the configured serial devices for boards"""
         for filespec in self.config['search_ports']:
-            for comport in glob.glob(comport):
+            for comport in glob.glob(filespec):
                 self.test_port(comport)
 
     @dbus.service.method(my_signature + '.launcher')
