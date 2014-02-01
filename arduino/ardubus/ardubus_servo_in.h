@@ -40,7 +40,7 @@ void ardubus_servo_in_rc_pulse_high(void* inptr)
 // Calculates the servo position, called from the update whenever there is new data
 void ardubus_servo_in_calc_servo_position(void* inptr)
 {
-    RCInput* input = (RCInput*)inptr;
+    ardubus_servo_in_RCInput* input = (ardubus_servo_in_RCInput*)inptr;
     input->servo_position = (uint16_t)(input->stop_micros - input->start_micros);
     input->new_data = false;
 }
