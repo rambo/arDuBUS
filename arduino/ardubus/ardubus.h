@@ -111,8 +111,8 @@ inline void ardubus_print_int_as_4hex(int input)
 #ifdef ARDUBUS_I2CASCII_BOARDS
 #include "ardubus_i2cascii.h"
 #endif
-#ifdef ARDUBUS_SERVO_INPUTS
-#include "ardubus_servo_in.h"
+#ifdef ARDUBUS_PULSE_INPUTS
+#include "ardubus_pulse_in.h"
 #endif
 
 /**
@@ -156,8 +156,8 @@ void ardubus_setup()
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_setup();
 #endif
-#ifdef ARDUBUS_SERVO_INPUTS
-    ardubus_servo_in_setup();
+#ifdef ARDUBUS_PULSE_INPUTS
+    ardubus_pulse_in_setup();
 #endif
 }
 
@@ -199,8 +199,8 @@ void ardubus_report()
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_report();
 #endif
-#ifdef ARDUBUS_SERVO_INPUTS
-    ardubus_servo_in_report();
+#ifdef ARDUBUS_PULSE_INPUTS
+    ardubus_pulse_in_report();
 #endif
     ardubus_last_report_time = millis();
 }
@@ -253,8 +253,8 @@ void ardubus_process_command()
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_process_command(ardubus_incoming_command);
 #endif
-#ifdef ARDUBUS_SERVO_INPUTS
-    ardubus_servo_in_process_command(ardubus_incoming_command);
+#ifdef ARDUBUS_PULSE_INPUTS
+    ardubus_pulse_in_process_command(ardubus_incoming_command);
 #endif
 }
 
@@ -337,8 +337,8 @@ void ardubus_update()
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_update();
 #endif
-#ifdef ARDUBUS_SERVO_INPUTS
-    ardubus_servo_in_update();
+#ifdef ARDUBUS_PULSE_INPUTS
+    ardubus_pulse_in_update();
 #endif
     ardubus_check_report();
 }

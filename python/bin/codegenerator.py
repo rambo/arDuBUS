@@ -82,10 +82,10 @@ class codegen:
             ret += """#include <Servo.h>\n"""
             ret += """#define ARDUBUS_SERVO_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['servo_pins'])))
 
-        if self.config.has_key('servo_input_pins'):
+        if self.config.has_key('pulse_input_pins'):
             ret += """// Get this from https://github.com/rambo/PinChangeInt_userData
 #include "PinChangeInt_userData.h"\n"""
-            ret += """#define ARDUBUS_SERVO_INPUTS { %s }\n""" % ", ".join("{ %d }" % x for x in self.parse_pin_numbers(self.config['servo_input_pins']))
+            ret += """#define ARDUBUS_PULSE_INPUTS { %s }\n""" % ", ".join("{ %d }" % x for x in self.parse_pin_numbers(self.config['pulse_input_pins']))
 
         if self.config.has_key('digital_pwmout_pins'):
             ret += """#define ARDUBUS_PWM_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_pwmout_pins'])))
