@@ -17,7 +17,7 @@ aliases_test_board:
           alias: tilt
         - pin: 3
           alias: pan
-    servo_input_pins: # pins passed to ARDUBUS_SERVO_INPUTS
+    pulse_input_pins: # pins passed to ARDUBUS_PULSE_INPUTS
         - pin: 6
           alias: rt_pb0
 fake_reactor_lid: # This is not an actual ardubus board but one with matrix keyboard and code to emulate plain inputs
