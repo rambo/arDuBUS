@@ -74,13 +74,22 @@ class codegen:
         if self.config.has_key('digital_in_pins'):
             ret = self.add_bounce_include(ret)
             ret += """#define ARDUBUS_DIGITAL_INPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_in_pins'])))
+
         if self.config.has_key('digital_out_pins'):
             ret += """#define ARDUBUS_DIGITAL_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_out_pins'])))
+
         if self.config.has_key('servo_pins'):
             ret += """#include <Servo.h>\n"""
             ret += """#define ARDUBUS_SERVO_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['servo_pins'])))
+
+        if self.config.has_key('servo_input_pins'):
+            ret += """// Get this from https://github.com/rambo/PinChangeInt_userData
+#include "PinChangeInt_userData.h"\n"""
+            ret += """#define ARDUBUS_SERVO_INPUTS { %s }\n""" % ", ".join("{ %d }" % x for x in self.parse_pin_numbers(self.config['servo_input_pins']))
+
         if self.config.has_key('digital_pwmout_pins'):
             ret += """#define ARDUBUS_PWM_OUTPUTS { %s }\n""" % ", ".join(map(str, self.parse_pin_numbers(self.config['digital_pwmout_pins'])))
+
         if self.config.has_key('pca9535_boards'):
             self.setup_i2c_init = True
             ret = self.add_i2c_include(ret)

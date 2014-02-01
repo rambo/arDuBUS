@@ -8,6 +8,7 @@
 #define ARDUBUS_COMMAND_STRING_SIZE 10 //Remember to allocate for the null termination
 #endif
 #ifndef ARDUBUS_INDEX_OFFSET
+// TODO: Use hex encoded values everywhere to avoid this
 #define ARDUBUS_INDEX_OFFSET 32 // We need to offset the pin/index numbers to above CR and LF which are control characters to us
 #endif
 
@@ -110,6 +111,9 @@ inline void ardubus_print_int_as_4hex(int input)
 #ifdef ARDUBUS_I2CASCII_BOARDS
 #include "ardubus_i2cascii.h"
 #endif
+#ifdef ARDUBUS_SERVO_INPUTS
+#include "ardubus_servo_in.h"
+#endif
 
 /**
  * Setups up all enabled submodules
@@ -152,6 +156,9 @@ void ardubus_setup()
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_setup();
 #endif
+#ifdef ARDUBUS_SERVO_INPUTS
+    ardubus_servo_in_setup();
+#endif
 }
 
 
@@ -191,6 +198,9 @@ void ardubus_report()
 #endif
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_report();
+#endif
+#ifdef ARDUBUS_SERVO_INPUTS
+    ardubus_servo_in_report();
 #endif
     ardubus_last_report_time = millis();
 }
@@ -242,6 +252,9 @@ void ardubus_process_command()
 #endif
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_process_command(ardubus_incoming_command);
+#endif
+#ifdef ARDUBUS_SERVO_INPUTS
+    ardubus_servo_in_process_command();
 #endif
 }
 
@@ -323,6 +336,9 @@ void ardubus_update()
 #endif
 #ifdef ARDUBUS_I2CASCII_BOARDS
     ardubus_i2cascii_update();
+#endif
+#ifdef ARDUBUS_SERVO_INPUTS
+    ardubus_servo_in_update();
 #endif
     ardubus_check_report();
 }
