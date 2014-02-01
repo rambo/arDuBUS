@@ -11,6 +11,7 @@ if os.path.isdir(libs_dir):
 import service,dbus,binascii,time
 
 # We need to offset the pin numbers to CR and LF which are control characters to us (NOTE: this *must* be same as in ardubus.h)
+# TODO: Use hex encoded values everywhere to avoid this
 PIN_OFFSET=32 
 
 class ardubus(service.baseclass):
