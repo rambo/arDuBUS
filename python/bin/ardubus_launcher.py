@@ -1,11 +1,14 @@
 #!/usr/bin/env python
-# Boilerplate to add ../pythonlibs (via full path resolution) to import paths
-import os,sys,glob
-libs_dir = os.path.join(os.path.dirname( os.path.realpath( __file__ ) ),  '..', 'pythonlibs')
-if os.path.isdir(libs_dir):                                       
-    sys.path.append(libs_dir)
+import os,sys
+
 # Import the launcher and other needed modules
-import launcher,dbus,serial,time,re,yaml
+from dbushelpers import launcher
+import dbus
+import serial
+import time
+import re
+import yaml
+import glob
 # Import the ardbubus main class to be used directly
 from ardubus import ardubus
 
@@ -133,4 +136,6 @@ class my_launcher(launcher.baseclass):
 
 # Another small bit of boilerplate
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        launcher_config['config_file_path'] = os.path.realpath(sys.argv[1])
     launcher.main(my_launcher, **launcher_config)
