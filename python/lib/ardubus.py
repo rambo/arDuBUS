@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # The real deal, this will talk with an arduino and pass signals/method calls back and forth
 from __future__ import with_statement
-# Boilerplate to add ../pythonlibs (via full path resolution) to import paths
 import os,sys
-libs_dir = os.path.join(os.path.dirname( os.path.realpath( __file__ ) ),  '..', 'pythonlibs')
-if os.path.isdir(libs_dir):                                       
-    sys.path.append(libs_dir)
 
 # Import our DBUS service module
-import service,dbus,binascii,time
+import dbushelpers.service
+import dbus
+import binascii,time
 
 # We need to offset the pin numbers to CR and LF which are control characters to us (NOTE: this *must* be same as in ardubus.h)
 # TODO: Use hex encoded values everywhere to avoid this
