@@ -3,4 +3,5 @@ speed: 115200 #TODO: switch to a (nonstandard) speed that matches arduino clock 
 search_ports: # Ports to search, NOTE: Will drive DTR to reset the device for identification!
     # The ports are passed to glob so you can use wildcards
     - /dev/ttyUSB*
+    - /dev/ttyACM*
 
