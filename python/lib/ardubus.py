@@ -185,14 +185,16 @@ class ardubus(dbushelpers.service.baseclass):
 
     @dbus.service.signal('fi.hacklab.ardubus')
     def dio_change(self, p_index, state, sender):
-        if self.config['digital_in_pins'][p_index]['alias']:
+        if (    self.config['digital_in_pins'][p_index].has_key('alias')
+            and self.config['digital_in_pins'][p_index]['alias']):
             self.alias_change(self.config['digital_in_pins'][p_index]['alias'], state, sender)
         pass
 
     @dbus.service.signal('fi.hacklab.ardubus')
     def pca9535_change(self, p_index, state, sender):
         #print "SIGNALLING: Pin(index) %d changed to %d on %s" % (p_index, state, sender)
-        if self.config['pca9535_inputs'][p_index]['alias']:
+        if (    self.config['pca9535_inputs'][p_index].has_key('alias')
+            and self.config['pca9535_inputs'][p_index]['alias']):
             self.alias_change(self.config['pca9535_inputs'][p_index]['alias'], state, sender)
         pass
 
@@ -222,8 +224,9 @@ class ardubus(dbushelpers.service.baseclass):
     def pulsein_change(self, p_index, value, sender):
         #print "SIGNALLING: servo-pin(index) %d changed to %d on %s" % (p_index, value, sender)
         # This might not work, the other aliased signals are booleans...
-        if self.config['servo_input_pins'][p_index]['alias']:
-            self.alias_report(self.config['servo_input_pins'][p_index]['alias'], value, time, sender)
+        if (    self.config['pulse_input_pins'][p_index].has_key('alias')
+            and self.config['pulse_input_pins'][p_index]['alias']):
+            self.alias_change(self.config['pulse_input_pins'][p_index]['alias'], value, sender)
         pass
 
     @dbus.service.signal('fi.hacklab.ardubus')

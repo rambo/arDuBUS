@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # A trivial example for listening signals on the bus
 
 import gobject
@@ -28,7 +29,7 @@ class ardubus_listener():
         print "Pin %d changed(index) to %d on %s" % (pin, state, sender)
         pass
 
-    def pulse_received(self, pin, length, sende):
+    def pulse_received(self, pin, length, sender):
         print "Pin %d pulsed %dus on %s" % (pin, length, sender)
 
     def pca9535_changed(self, pin, state, sender):
