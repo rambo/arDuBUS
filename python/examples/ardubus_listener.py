@@ -11,6 +11,7 @@ class ardubus_listener():
         self.bus = bus
         # We can either listen all signals on the interface regardles of the board or specify we want to listen only to specific board
         self.bus.add_signal_receiver(self.switch_changed, dbus_interface = "fi.hacklab.ardubus", signal_name = "dio_change")
+        self.bus.add_signal_receiver(self.pulse_received, dbus_interface = "fi.hacklab.ardubus", signal_name = "pulsein_change")
         self.bus.add_signal_receiver(self.pca9535_changed, dbus_interface = "fi.hacklab.ardubus", signal_name = "pca9535_change")
         self.bus.add_signal_receiver(self.analog_changed, dbus_interface = "fi.hacklab.ardubus", signal_name = "aio_change")
         #self.bus.add_signal_receiver(self.switch_changed, dbus_interface = "fi.hacklab.ardubus", signal_name = "dio_change", path='/fi/hacklab/ardubus/arduino0')
@@ -26,6 +27,9 @@ class ardubus_listener():
     def switch_changed(self, pin, state, sender):
         print "Pin %d changed(index) to %d on %s" % (pin, state, sender)
         pass
+
+    def pulse_received(self, pin, length, sende):
+        print "Pin %d pulsed %dus on %s" % (pin, length, sender)
 
     def pca9535_changed(self, pin, state, sender):
         #print "PCA9535 Pin %d changed(index) to %d on %s" % (pin, state, sender)

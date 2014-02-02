@@ -219,7 +219,7 @@ class ardubus(dbushelpers.service.baseclass):
         pass
 
     @dbus.service.signal('fi.hacklab.ardubus')
-    def servoin_change(self, p_index, value, sender):
+    def pulsein_change(self, p_index, value, sender):
         #print "SIGNALLING: servo-pin(index) %d changed to %d on %s" % (p_index, value, sender)
         # This might not work, the other aliased signals are booleans...
         if self.config['servo_input_pins'][p_index]['alias']:
@@ -227,7 +227,7 @@ class ardubus(dbushelpers.service.baseclass):
         pass
 
     @dbus.service.signal('fi.hacklab.ardubus')
-    def servoin_report(self, p_index, value, sender):
+    def pulsein_report(self, p_index, value, sender):
         #print "SIGNALLING: servo-pin(index) %d changed to %d on %s" % (p_index, value, sender)
         pass
 
@@ -269,10 +269,10 @@ class ardubus(dbushelpers.service.baseclass):
                 self.aio_change(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
                 pass
             if (self.input_buffer[:2] == 'CS'):
-                self.servoin_change(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
+                self.pulsein_change(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
                 pass
             if (self.input_buffer[:2] == 'RS'):
-                self.servoin_report(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
+                self.pulsein_report(ord(input_buffer[2]), int(input_buffer[3:7], 16), self.object_name)
                 pass
             if (self.input_buffer[:2] == 'RA'):
                 self.aio_report(ord(input_buffer[2]), int(input_buffer[3:7], 16), int(input_buffer[6:15], 16), self.object_name)
