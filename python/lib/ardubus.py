@@ -7,6 +7,7 @@ import os,sys
 import dbushelpers.service
 import dbus
 import binascii,time
+import yaml
 
 # We need to offset the pin numbers to CR and LF which are control characters to us (NOTE: this *must* be same as in ardubus.h)
 # TODO: Use hex encoded values everywhere to avoid this
@@ -54,24 +55,65 @@ class ardubus(dbushelpers.service.baseclass):
         return config_section
 
     def normalize_config(self):
-        if self.config.has_key('digital_in_pins'):
-            self.config['digital_in_pins'] = self.normalize_pins(self.config['digital_in_pins'])
-        if self.config.has_key('pca9535_inputs'):
-            self.config['pca9535_inputs'] = self.normalize_pins(self.config['pca9535_inputs'])
+        supports_aliases = (
+            'digital_in_pins',
+            'digital_out_pins',
+            'pca9535_inputs',
+            'pulse_input_pins',
+            'servo_pins',
+            'digital_pwmout_pins',
+        )
+        for k in range(len(supports_aliases)):
+            section = supports_aliases[k]
+            if not self.config.has_key(k):
+                continue
+            self.config[k] = self.normalize_pins(self.config[k])
         # reminder to support output aliasing in the future, somehow...
         #if self.config.has_key('pca9535_outputs'):
         #    self.config['pca9535_outputs'] = self.normalize_pins(self.config['pca9535_outputs'])
-        
         pass
 
     def rebuild_alias_maps(self):
-        # When we support aliasing of output pins we need to map the aliases to correct io methods somehow...
+        # Config key to method mapping
+        supports_aliased_output = {
+            'digital_out_pins': self.set_dio,
+            'servo_pins': self.set_servo,
+            'digital_pwmout_pins': self.set_pwm,
+        }
+        # In the format of aliases['alias'] = (index, method)
+        self.aliases = {}
+        for section in supports_aliased_output.keys():
+            if not self.config.has_key(section):
+                continue
+            for idx in range(len(self.config[section])):
+                alias = self.config[section][idx]['alias']
+                if not alias:
+                    continue
+                if self.aliases.has_key(alias):
+                    from exceptions import RuntimeError
+                    raise RuntimeError("Duplicate alias %s on device %s in file %s" % (alias, self.object_name, self.config_file_path))
+                self.aliases[alias] = (idx, supports_aliased_output[section])
         pass
+
+    @dbus.service.method('fi.hacklab.ardubus', in_signature='sn') # "y" is the signature for a byte, n is 16bit signed integer
+    def set_alias(self, alias, value):
+        """Aliased output, supports only the simple ones where one value is enough"""
+        idx = self.aliases[alias][0]
+        callback = self.aliases[alias][1]
+        callback(idx, value)
 
     def config_reloaded(self):
         """Recalculates all config mappings etc"""
         self.normalize_config()
         self.rebuild_alias_maps()
+
+    @dbus.service.method('fi.hacklab.ardubus')
+    def get_config(self):
+        """Returns the config map, the remote end can do processing based on aliases and whatnot"""
+        # TODO: the complex dictionary needs to be mapped to proper dbus objects in entirety 
+        #return dbus.Dictionary(self.config)
+        # alternatively we could encode it back to YAML and then re-parse on receiver
+        return yaml.dump(self.config)
 
     def stop_serial(self):
         self.serial_alive = False
