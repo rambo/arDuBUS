@@ -22,6 +22,7 @@ class ardubus(dbushelpers.service.baseclass):
         self.config_reloaded() # Triggers all config normalizations and mapping rebuilds
         self.initialize_serial()
         print "Board initialized as %s:%s with config %s" % (self.dbus_interface_name, self.dbus_object_path, repr(self.config))
+        self.print_debug = False
 
     def send_serial_command(self, command):
         command = command + "\n"
@@ -341,14 +342,15 @@ class ardubus(dbushelpers.service.baseclass):
                 data = self.serial_port.read(1)
                 if len(data) == 0:
                     continue
-                # hex-encode unprintable characters
-#               if data not in string.letters.join(string.digits).join(string.punctuation).join("\r\n"):
-#                    sys.stdout.write("\\0x".join(binascii.hexlify(data)))
-                # OTOH repr was better afterall
-                if data not in "\r\n":
-                    sys.stdout.write(repr(data))
-                else:
-                    sys.stdout.write(data)
+                if self.print_debug:
+                    # hex-encode unprintable characters
+                    #if data not in string.letters.join(string.digits).join(string.punctuation).join("\r\n"):
+                    #    sys.stdout.write("\\0x".join(binascii.hexlify(data)))
+                    # OTOH repr was better afterall
+                    if data not in "\r\n":
+                        sys.stdout.write(repr(data))
+                    else:
+                        sys.stdout.write(data)
                 # Put the data into inpit buffer and check for CRLF
                 self.input_buffer += data
                 # Trim prefix NULLs and linebreaks
