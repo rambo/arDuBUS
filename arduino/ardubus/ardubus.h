@@ -46,8 +46,12 @@ inline int ardubus_hex2int(byte hexchar0, byte hexchar1, byte hexchar2, byte hex
  */
 inline void ardubus_ack()
 {
+    /*
     Serial.write(0x6);
     Serial.println(F(""));
+    */
+    // This ought to work too
+    Serial.println(0x6);
 }
 
 // Utility functions for outputting fixed lenght nex encoded numbers
