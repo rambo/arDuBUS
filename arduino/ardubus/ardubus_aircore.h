@@ -37,7 +37,7 @@ inline void ardubus_aircore_process_command(char *incoming_command)
             Serial.print(incoming_command[1]);
             Serial.print(incoming_command[2]);
             Serial.print(incoming_command[3]);
-            ardubus_ack();
+            return ardubus_ack();
             break;
     }
 }

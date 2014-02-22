@@ -42,7 +42,7 @@ inline void ardubus_i2cascii_process_command(char *incoming_command)
             Serial.print(F("w"));
             Serial.print(incoming_command[1]);
             Serial.print(ardubus_i2cascii_buffer);
-            ardubus_ack();
+            return ardubus_ack();
             break;
     }
 }

@@ -32,7 +32,7 @@ inline void ardubus_pwm_out_process_command(char *incoming_command)
             Serial.print(F("P"));
             Serial.print(incoming_command[1]);
             Serial.print(incoming_command[2]);
-            ardubus_ack();
+            return ardubus_ack();
             break;
     }
 }
