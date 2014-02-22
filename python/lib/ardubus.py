@@ -8,6 +8,7 @@ import dbushelpers.service
 import dbus
 import binascii,time
 import yaml
+import select
 
 # We need to offset the pin numbers to CR and LF which are control characters to us (NOTE: this *must* be same as in ardubus.h)
 # TODO: Use hex encoded values everywhere to avoid this
@@ -349,7 +350,7 @@ class ardubus(dbushelpers.service.baseclass):
                         self.serial_alive = False
                         continue
                         # TODO: Raise a specific error ??
-                 
+                rd, wd, ed  = select.select([ self.serial_port, ], [], [ self.serial_port, ], 5) # Wait up to 5s for new data
                 if not self.serial_port.inWaiting():
                     # Don't try to read if there is no data, instead sleep (yield) a bit
                     time.sleep(0)
