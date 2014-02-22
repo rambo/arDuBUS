@@ -23,6 +23,8 @@ class ardubus(dbushelpers.service.baseclass):
         self.initialize_serial()
         print "Board initialized as %s:%s with config %s" % (self.dbus_interface_name, self.dbus_object_path, repr(self.config))
         self.print_debug = False
+        self.last_response_time = None
+        self.dead_board_timeout = 15 # Seconds, if we have no messages for this many seconds suppose the board is dead
 
     def send_serial_command(self, command):
         command = command + "\n"
@@ -294,9 +296,14 @@ class ardubus(dbushelpers.service.baseclass):
         self.receiver_thread.start()
         print "%s serial thread started" % self.dbus_object_path
 
+
     def message_received(self, input_buffer):
         #print "message_received called with buffer %s" % repr(input_buffer)
+        self.last_response_time = time.time()
         try:
+            if (   len(self.input_buffer) >= 4
+                and self.input_buffer[:4] == 'PONG'):
+                return
             if (self.input_buffer[:2] == 'CD'):
                 # State change
                 self.dio_change(ord(input_buffer[2]), bool(int(input_buffer[3])), self.object_name)
@@ -335,9 +342,17 @@ class ardubus(dbushelpers.service.baseclass):
         self.serial_alive = True
         try:
             while self.serial_alive:
+                # Check that the board is still talking to us regularly
+                if self.last_response_time: # wait for at least one message first
+                    if ((time.time() - self.last_response_time) > self.dead_board_timeout):
+                        print " ** No messages received from %s for %d seconds ** " % (self.dbus_object_path, self.dead_board_timeout)
+                        self.serial_alive = False
+                        continue
+                        # TODO: Raise a specific error ??
+                 
                 if not self.serial_port.inWaiting():
                     # Don't try to read if there is no data, instead sleep (yield) a bit
-                    time.sleep(0.01)
+                    time.sleep(0)
                     continue
                 data = self.serial_port.read(1)
                 if len(data) == 0:
@@ -353,6 +368,7 @@ class ardubus(dbushelpers.service.baseclass):
                         sys.stdout.write(data)
                 # Put the data into inpit buffer and check for CRLF
                 self.input_buffer += data
+                # TODO: make the linebreak configurable
                 # Trim prefix NULLs and linebreaks
                 self.input_buffer = self.input_buffer.lstrip(chr(0x0) + "\r\n")
                 #print "input_buffer=%s" % repr(self.input_buffer)

@@ -170,6 +170,8 @@ void ardubus_setup()
 unsigned long ardubus_last_report_time;
 void ardubus_report()
 {
+    // Ued to make sure the device is still alive
+    Serial.println(F("PONG"))
 #ifdef ARDUBUS_DIGITAL_INPUTS
     ardubus_digital_in_report();
 #endif
