@@ -21,11 +21,11 @@ class ardubus(dbushelpers.service.baseclass):
         self.serial_device = kwargs['serial_device']
         self.serial_speed = kwargs['serial_speed']
         self.config_reloaded() # Triggers all config normalizations and mapping rebuilds
+        self.last_response_time = None
+        self.print_debug = False
+        self.dead_board_timeout = 15 # Seconds, if we have no messages for this many seconds suppose the board is dead
         self.initialize_serial()
         print "Board initialized as %s:%s with config %s" % (self.dbus_interface_name, self.dbus_object_path, repr(self.config))
-        self.print_debug = False
-        self.last_response_time = None
-        self.dead_board_timeout = 15 # Seconds, if we have no messages for this many seconds suppose the board is dead
 
     def send_serial_command(self, command):
         command = command + "\n"
