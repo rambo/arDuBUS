@@ -1,0 +1,7 @@
+gtk_example_board:
+    digital_in_pins: # pins passed to ARDUBUS_DIGITAL_INPUTS
+        - pin: 2
+          alias: example_button
+    digital_pwmout_pins: 
+        - pin: 13
+          alias: dimmable_led
