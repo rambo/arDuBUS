@@ -24,6 +24,10 @@ class example_program:
         self.main_right_column = gtk.VBox()
         hbox.add(self.main_right_column)
         self.mainwindow.add(hbox)
+        
+        self.led_pwm = gtk.Adjustment(value=0, lower=0, upper=255, step_incr=1, page_incr=0, page_size=0)
+        self.led_pwm_slider = gtk.HScale(adjustment=self.led_pwm)
+        self.main_right_column.add(self.led_pwm_slider)
 
 
     def alias_changed(self, alias, value, sender):
