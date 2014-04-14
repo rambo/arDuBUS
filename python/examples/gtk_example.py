@@ -57,9 +57,12 @@ class example_program:
 
 
     def led_pwm_changed(self, *args):
-        value = self.led_pwm.get_value()
+        value = int(self.led_pwm.get_value())
         try:
             call_cached('/fi/hacklab/ardubus/gtk_example_board', 'set_alias', 'dimmable_led', value)
+            # Above is shorthand for this
+            # obj = self.bus.get_object('fi.hacklab.ardubus.gtk_example_board', '/fi/hacklab/ardubus/gtk_example_board')
+            # obj.set_alias('dimmable_led', value)
         except dbus.exceptions.DBusException,e:
             # No arduino
             print "Could not set value %d via arDuBUS" % value
