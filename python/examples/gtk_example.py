@@ -2,6 +2,8 @@
 import pygtk
 import gtk
 import gobject
+import dbus
+import dbus.mainloop.glib
 from dbushelpers.call_cached import call_cached
 
 
@@ -53,9 +55,7 @@ class example_program:
 
 
 if __name__ == '__main__':
-    import dbus
-    from dbus.mainloop.glib import DBusGMainLoop
-    DBusGMainLoop(set_as_default=True)
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     bus = dbus.SessionBus()
     w = example_program(bus)
     w.mainloop()
