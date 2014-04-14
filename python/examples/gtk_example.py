@@ -24,11 +24,12 @@ class example_program:
         self.main_right_column = gtk.VBox()
         hbox.add(self.main_right_column)
         self.mainwindow.add(hbox)
-        
+
 
     def alias_changed(self, alias, value, sender):
         # TODO: display state
         pass
+
 
     def led_slider_changed(self, *args):
         # TODO: read the value and set led PWM
@@ -40,9 +41,11 @@ class example_program:
     def quit(self, widget, data=None):
         gtk.main_quit()
 
+
     def mainloop(self):
          self.mainwindow.show_all()
          gtk.main()
+
 
 
 if __name__ == '__main__':
