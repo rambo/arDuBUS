@@ -1,5 +1,14 @@
 #!/usr/bin/env python
-"""This is a very simple arDuBUS example reading one button and controlling PWM of one LED, use the provided YML to generate the Arduino code"""
+"""This is a very simple arDuBUS example reading one button and controlling PWM of one LED, use the provided YML to generate the Arduino code
+
+1. Copy ardubus.yml.example to examples/ardubus.yml and symlink/copy examples/gtk_example_devices.yml to examples/devices.yml
+2. Use bin/codegenerator.py examples/devices.yml to generate the Arduino sketch
+3. Use Arduino IDE to compile and program your Arduino
+4. Connect pushbutton (normally-open type) and a LED as shown in the image
+5. Use bin/ardubus_launcher.py examples/ardubus.yml to launch the arDuBUS daemon
+6. Launch this program and press the button, button state text should change, then use the slider to adjust the LED
+
+"""
 import pygtk
 import gtk
 import gobject
