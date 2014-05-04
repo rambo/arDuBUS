@@ -1,9 +1,11 @@
 arDuBUS
 =======
 
-Arduino DBUS (and soon ZMQ) bridge in Python
+Arduino DBUS (and soon ZMQ) bridge in Python, [quick demo][demo].
 
 Forked from <https://github.com/HelsinkiHacklab/reactor>
+
+[demo]: https://www.youtube.com/watch?v=t78oJ-nSe-k
 
 ## Requirements
 
