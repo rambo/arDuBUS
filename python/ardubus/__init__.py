@@ -1,3 +1,3 @@
 """Arduino DBUS bridge"""
 
-from ardubus import *
+from .ardubus import *
