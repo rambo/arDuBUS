@@ -6,4 +6,6 @@ See https://github.com/rambo/arDuBUS for the full package (includes Arduino libr
 
 ## TODO
 
+  - Package the bin-scripts
+  - Package the example yamls
   - Refactoring
