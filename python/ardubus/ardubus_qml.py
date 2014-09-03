@@ -2,7 +2,7 @@
 
 """Ardubus object that works with QML object adhering to certain naming, see https://github.com/HelsinkiHacklab/reactor/tree/master/software/virtual_hardware/rodcontrol"""
 
-import ardubus as ardubus_real
+import .ardubus as ardubus_real
 import dbus
 
 class ardubus_qml(ardubus_real.ardubus):

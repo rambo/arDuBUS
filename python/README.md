@@ -1,10 +1,9 @@
-# arDuBUS: Arduino <-> DBUS bridge
+# arDuBUS
 
-To control your arduino via the "real" computer and vice versa
+Arduino DBUS (and soon ZMQ) bridge in Python, the python parts
 
-Includes sketch generator and a bunch of code, also some support for virtualized hardware (for testing the stuff running on the computer without having to wire everything up every time)
+See https://github.com/rambo/arDuBUS for the full package (includes Arduino libraries as well)
 
-# TODO
+## TODO
 
   - Refactoring
-  - Separate to own repo (the code is general even if the "example" configs aren't)
