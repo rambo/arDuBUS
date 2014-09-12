@@ -11,6 +11,7 @@ setup(
     packages=['ardubus',],
     license='GNU LGPL',
     long_description=open('README.md').read(),
+    description='Arduino <-> DBUS bridge',
     install_requires=[
         'pyserial>=2.7',
         'dbushelpers>=0.1', 
