@@ -108,7 +108,7 @@ class SPI595Proxy(BaseProxy):
         """Get a proxy object for given bit on this register"""
         return SPI595BitProxy(idx=8 * self.idx + bit_idx, transport=self.transport)
 
-    def set_bit(self, bit_idx, value):
+    async def set_bit(self, bit_idx, value):
         """Set single bit on this board to value"""
         if not self.transport:
             raise RuntimeError('Transport must be set to use this method')
