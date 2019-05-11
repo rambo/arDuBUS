@@ -21,6 +21,12 @@ class BaseTransport:
     unsolicited_message_callback = None
     lock = asyncio.Lock()
 
+    def __str__(self):
+        return '<{}({})>'.format(self.__class__.__name__, self.__dict__)
+
+    def __repr__(self):
+        return str(self)
+
     async def quit(self):
         """Must shutdown all background threads (if any)"""
         raise NotImplementedError()
