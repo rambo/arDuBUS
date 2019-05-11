@@ -35,7 +35,7 @@ def load_devices_yml(filepath, device_transports=None):
     """Loads the config file, normalizes configs etc"""
     global FULL_CONFIG_MAP
     with open(filepath, 'rt') as filepointer:
-        FULL_CONFIG_MAP = yaml.load(filepointer)
+        FULL_CONFIG_MAP = yaml.safe_load(filepointer)
 
     for devicename in FULL_CONFIG_MAP.keys():
         transport = None
@@ -67,11 +67,11 @@ def normalize_generic_aliases(devicename, transport=None):
 
             # Assign to alias map if alias is set
             if item['alias'] is not None:
-                if item['alias'] in ALIAS_MAP:
+                if item['alias'] in ALIAS_MAP[devicename]:
                     LOGGER.error('Duplicate alias "{}" at {}:{}:{}'.format(
                         item['alias'], devicename, section_key, item_key))
                 else:
-                    ALIAS_MAP[item['alias']] = FULL_CONFIG_MAP[devicename][section_key][item_key]
+                    ALIAS_MAP[devicename][item['alias']] = FULL_CONFIG_MAP[devicename][section_key][item_key]
 
             # create command proxy
             if section_key in SECTION_CMDPROXY_MAP:
@@ -112,11 +112,11 @@ def normalize_pca9635rgbjbol_boards(devicename, transport=None):  # pylint: disa
 
             # Assign to alias map if alias is set
             if item['alias'] is not None:
-                if item['alias'] in ALIAS_MAP:
+                if item['alias'] in ALIAS_MAP[devicename]:
                     LOGGER.error('Duplicate alias "{}" at {}:pca9635RGBJBOL_maps:{}:{}'.format(
                         item['alias'], devicename, board_idx, req_idx))
                 else:
-                    ALIAS_MAP[item['alias']] = FULL_CONFIG_MAP[devicename]['pca9635RGBJBOL_maps'][board_idx][req_idx]
+                    ALIAS_MAP[devicename][item['alias']] = FULL_CONFIG_MAP[devicename]['pca9635RGBJBOL_maps'][board_idx][req_idx]  # noqa: E501 ; # pylint: disable=C0301
 
             # create command proxy
             item['PROXY'] = JBOLLedProxy(board_idx=board_idx, ledno=item['pin'],
@@ -141,11 +141,11 @@ def normalize_i2cascii_boards(devicename, transport=None):
 
         # Assign to alias map if alias is set
         if item['alias'] is not None:
-            if item['alias'] in ALIAS_MAP:
+            if item['alias'] in ALIAS_MAP[devicename]:
                 LOGGER.error('Duplicate alias "{}" at {}:i2cascii_boards:{}'.format(
                     item['alias'], devicename, board_idx))
             else:
-                ALIAS_MAP[item['alias']] = FULL_CONFIG_MAP[devicename]['i2cascii_boards'][board_idx]
+                ALIAS_MAP[devicename][item['alias']] = FULL_CONFIG_MAP[devicename]['i2cascii_boards'][board_idx]  # noqa: E501 ; # pylint: disable=C0301
 
         # create command proxy
         item['PROXY'] = I2CASCIIProxy(board_idx=board_idx, max_chars=item['chars'],
@@ -185,20 +185,21 @@ def normalize_aircore_boards(devicename, transport=None):  # pylint: disable=R09
 
             # Assign to alias map if alias is set
             if item['alias'] is not None:
-                if item['alias'] in ALIAS_MAP:
+                if item['alias'] in ALIAS_MAP[devicename]:
                     LOGGER.error('Duplicate alias "{}" at {}:aircore_correction_values:{}:{}'.format(
                         item['alias'], devicename, board_idx, motorno))
                 else:
-                    ALIAS_MAP[item['alias']] = FULL_CONFIG_MAP[devicename]['aircore_correction_values'][board_idx][motorno]  # noqa: E501 ; # pylint: disable=C0301
+                    ALIAS_MAP[devicename][item['alias']] = FULL_CONFIG_MAP[devicename]['aircore_correction_values'][board_idx][motorno]  # noqa: E501 ; # pylint: disable=C0301
 
             # create command proxy
-            item['PROXY'] = AirCoreProxy(board_idx=board_idx, motorno=item['motorno'], transport=transport,
+            item['PROXY'] = AirCoreProxy(board_idx=board_idx, motorno=motorno, transport=transport,
                                          alias=item['alias'], value_correction=item['correction'])
 
 
 def normalize_device_config(devicename, transport=None):
     """Normalizes a device config dict, if transport is set initializes the command proxies too"""
-    global FULL_CONFIG_MAP
+    global FULL_CONFIG_MAP, ALIAS_MAP
+    ALIAS_MAP[devicename] = {}
     normalize_generic_aliases(devicename, transport)
     normalize_pca9635rgbjbol_boards(devicename, transport)
     normalize_i2cascii_boards(devicename, transport)
