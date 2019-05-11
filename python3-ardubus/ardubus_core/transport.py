@@ -1,6 +1,7 @@
 """Handle serial transport"""
 import asyncio
 import logging
+import re
 import time
 
 import serial
@@ -13,6 +14,7 @@ from .events import (AnalogPinChange, AnalogPinStatus, PCA9535PinChange,
 SERIAL_WRITE_TIMEOUT = 0.5
 
 LOGGER = logging.getLogger(__name__)
+BOARD_IDENTIFY_RE = re.compile(rb'^Board: (\w+) \w+')
 
 
 class BaseTransport:
@@ -79,19 +81,66 @@ class SerialTransport(BaseTransport):
     """Uses PySerials ReaderThread in the background to save us some pain"""
     serialhandler = None
     events_callback = None
+    device_name = None
 
     def __init__(self, serial_device, device_config_map, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.device_config_map = device_config_map
+        self.update_proxy_transports(self.device_config_map)
         self.serialhandler = serial.threaded.ReaderThread(serial_device, SerialProtocol)
         self.serialhandler.start()
         self.serialhandler.protocol.handle_packet = self.message_received
         self.unsolicited_message_callback = self.parse_report
+        if 'device_name' in kwargs:
+            self.device_name = kwargs.pop('device_name')
+        super().__init__(*args, **kwargs)
 
-    def parse_report(self, input_buffer):
+    def __str__(self):
+        return '<{}(name={}, port={})>'.format(self.__class__.__name__, self.device_name,
+                                               self.serialhandler.serial.port)
+
+    def update_proxy_transports(self, config_level):
+        """recursively Add transport to proxies that are missing it"""
+        if isinstance(config_level, dict):
+            # we have proxy, update it
+            if 'PROXY' in config_level:
+                if not config_level['PROXY'].transport:
+                    config_level['PROXY'].transport = self
+                # Update or no, we are done here
+                return
+            # Otherwise recurse
+            for key in config_level:
+                self.update_proxy_transports(config_level[key])
+            return
+        if isinstance(config_level, list):
+            for item in config_level:
+                self.update_proxy_transports(item)
+            return
+        # PONDER: Do we have other iterable types we need to consider ??
+        return
+
+    def parse_report(self, input_buffer):  # pylin: disable=R0911,R0912
         """Parses the unsolicited reports, sends events to callback"""
         event = None
         LOGGER.debug('got {}'.format(repr(input_buffer)))
+
+        if not input_buffer:
+            # Empty buffer, skip
+            return
+        if input_buffer.startswith(b'DEBUG:'):
+            # It's logged above anyway
+            return
+        # Get the device name
+        if input_buffer.startswith(b'Board: '):
+            matched = BOARD_IDENTIFY_RE.findall(input_buffer)
+            if not matched:
+                LOGGER.warning('Could not parse device_name from {}'.format(input_buffer))
+                return
+            new_name = matched[0].decode('ascii')
+            if self.device_name and self.device_name != new_name:
+                LOGGER.warning('We had device_name "{}" but got "{}" from buffer'.format(self.device_name, new_name))
+            self.device_name = new_name
+            return
+
         if input_buffer[0:2] == b'CP':
             event = PCA9535PinChange(self.device_config_map, idx=input_buffer[2],
                                      state=bool(int(chr(input_buffer[3]))))
