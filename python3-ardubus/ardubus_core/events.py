@@ -12,7 +12,8 @@ class BaseEvent:
     def __init__(self, device_config_map, idx, **kwargs):
         self.idx = idx
         self.__dict__.update(kwargs)
-        self.alias = self.resolve_alias(device_config_map, idx, **kwargs)
+        if self.alias is None:
+            self.alias = self.resolve_alias(device_config_map, idx, **kwargs)
 
     def resolve_alias(self, device_config_map, idx, **kwargs):
         """Resolve the alias from config based on the given index"""
