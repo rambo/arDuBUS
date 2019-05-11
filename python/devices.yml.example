@@ -21,7 +21,7 @@ aliases_test_board:
         - pin: 6
           alias: rt_pb0
 fake_reactor_lid: # This is not an actual ardubus board but one with matrix keyboard and code to emulate plain inputs
-    digital_in_pins: 
+    digital_in_pins:
         - pin: 0
           alias: rod_0_0_stomp
         - pin: 1
@@ -218,7 +218,9 @@ rod_control_panel: # The board identifier
         0: #index of the board list
             0: 164 # number of channel on driver
             1: 225
-            3: 30
+            3:
+              correction: 30
+              alias: alias_gauge
             4: 180
             5: 120
             6: 27
@@ -258,7 +260,9 @@ rod_control_panel: # The board identifier
         0: # board address, upper "rod" leds
             0: 22 # key is the requested index, value is the real index to send to the Arduino
             1: 11
-            2: 23
+            2:
+              pin: 23
+              alias: topleds_22-20
             3: 8
             4: 20
             5: 9
@@ -299,17 +303,17 @@ rod_control_panel: # The board identifier
             2: 8
             3: 7
             4: 23 # red
-            5: 22 
+            5: 22
             6: 20
             7: 19
             8: 16 # upper left, green
-            9: 15 
-            10: 14 
+            9: 15
+            10: 14
             11: 1
             12: 4 # red
             13: 3
-            14: 2 
-            15: 13 
+            14: 2
+            15: 13
             16: 35 # lower right, green
             17: 34
             18: 33
