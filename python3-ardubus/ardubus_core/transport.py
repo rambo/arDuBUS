@@ -63,7 +63,7 @@ class SerialProtocol(serial.threaded.Packetizer):
         if not isinstance(packet, bytes):
             raise InvalidPacketError('Packet has wrong type: {}'.format(type(packet)))
 
-        if b'\r' or b'\n' in packet:
+        if b'\r'in packet or b'\n' in packet:
             raise InvalidPacketError('Packet contains line ending characters')
 
         self.transport.write(packet + self.TERMINATOR)
@@ -147,6 +147,8 @@ class SerialTransport(BaseTransport):
 
 def get(serial_url, device_config_map, **serial_kwargs):
     """Shorthand for creating the port from url and initializing the transport"""
+    if 'baudrate' not in serial_kwargs:
+        serial_kwargs['baudrate'] = 115200
     port = serial.serial_for_url(serial_url, **serial_kwargs)
     port.setDTR(False)  # Reset the arduino by driving DTR for a moment (RS323 signals are active-low)
     time.sleep(0.050)
