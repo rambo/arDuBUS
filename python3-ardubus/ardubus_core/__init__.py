@@ -1,3 +1,4 @@
+"""arDuBUS core library, serial coms and abstraction"""
 import logging
 
 
