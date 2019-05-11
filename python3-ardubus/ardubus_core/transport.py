@@ -118,7 +118,7 @@ class SerialTransport(BaseTransport):
         # PONDER: Do we have other iterable types we need to consider ??
         return
 
-    def parse_report(self, input_buffer):  # pylin: disable=R0911,R0912
+    def parse_report(self, input_buffer):  # pylint: disable=R0911,R0912
         """Parses the unsolicited reports, sends events to callback"""
         event = None
         LOGGER.debug('got {}'.format(repr(input_buffer)))
@@ -179,7 +179,6 @@ class SerialTransport(BaseTransport):
         if not self.serialhandler or not self.serialhandler.is_alive():
             raise TransportError('Serial handler not ready')
         with await self.lock:
-            self.serialhandler.protocol.write_packet(command)
             response = None
 
             def set_response(message):
@@ -187,13 +186,17 @@ class SerialTransport(BaseTransport):
                 nonlocal response
                 response = message
             self.message_callback = set_response
+            # FIXME: we have a race condition here with reports and change signals
+            self.serialhandler.protocol.write_packet(command)
             while response is None:
                 await asyncio.sleep(0)
+            LOGGER.debug('response is: {}'.format(response))
             # Parse response
             if response == b'\x15':
                 raise NACKError('Got explicit NACK, command was {}'.format(repr(command)))
-            if not response.endswith(b'\x06'):
-                raise NACKError('Did not get ACK, command was {}'.format(repr(command)))
+            # until the race condition is fixed this is dangerous
+            # if not response.endswith(b'\x06'):
+            #     raise NACKError('Did not get ACK, command was {}'.format(repr(command)))
 
     async def quit(self):
         """Closes the port and background threads"""
