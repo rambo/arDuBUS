@@ -216,45 +216,109 @@ rod_control_panel: # The board identifier
     aircore_boards: [ 4, 5, 6, 7, 8 ]
     aircore_correction_values:
         0: #index of the board list
-            0: 164 # number of channel on driver
-            1: 225
+            0: # key is number of channel on driver
+              correction: 164
+              alias: rod_4_2_gauge
+            1:
+              correction: 225
+              alias: rod_5_2_gauge
             3:
               correction: 30
-              alias: alias_gauge
-            4: 180
-            5: 120
-            6: 27
-            7: 70
+              alias: rod_4_3_gauge
+            4:
+              correction: 180
+              alias: rod_5_1_gauge
+            5:
+              correction: 120
+              alias: rod_6_2_gauge
+            6:
+              correction: 27
+              alias: rod_3_2_gauge
+            7:
+              correction: 70
+              alias: rod_6_3_gauge
         1:
-            0: 100
-            1: 240
-            3: 140
-            4: 230
-            5: 180
-            7: 10
+            0:
+              correction: 100
+              alias: rod_1_3_gauge
+            1:
+              correction: 240
+              alias: rod_2_3_gauge
+            3:
+              correction: 140
+              alias: rod_3_3_gauge
+            4:
+              correction: 230
+              alias: rod_0_4_gauge
+            5:
+              correction: 180
+              alias: rod_5_3_gauge
+            7:
+              correction: 10
+              alias: rod_0_3_gauge
         2:
-            0: 110
-            1: 140
-            2: 120
-            3: 130
-            4: 200
-            5: 220
-            6: 220
-            7: 130
+            0:
+              correction: 110
+              alias: rod_2_0_gauge
+            1:
+              correction: 140
+              alias: rod_4_0_gauge
+            2:
+              correction: 120
+              alias: rod_3_0_gauge
+            3:
+              correction: 130
+              alias: rod_2_2_gauge
+            4:
+              correction: 200
+              alias: rod_0_2_gauge
+            5:
+              correction: 220
+              alias: rod_3_1_gauge
+            6:
+              correction: 220
+              alias: rod_1_1_gauge
+            7:
+              correction: 130
+              alias: rod_2_1_gauge
         3:
-            0: 10
-            1: 150
-            3: 70
-            4: 80
-            5: 220
-            6: 0
+            0:
+              correction: 10
+              alias: rod_4_6_gauge
+            1:
+              correction: 150
+              alias: rod_6_4_gauge
+            3:
+              correction: 70
+              alias: rod_4_4_gauge
+            4:
+              correction: 80
+              alias: rod_4_5_gauge
+            5:
+              correction: 220
+              alias: rod_5_5_gauge
+            6:
+              correction: 0
+              alias: rod_3_6_gauge
         4:
-            0: 70
-            1: 200
-            2: 80
-            3: 150
-            5: 0
-            7: 170
+            0:
+              correction: 70
+              alias: rod_1_5_gauge
+            1:
+              correction: 200
+              alias: rod_3_4_gauge
+            2:
+              correction: 80
+              alias: rod_3_5_gauge
+            3:
+              correction: 150
+              alias: rod_2_4_gauge
+            5:
+              correction: 0
+              alias: rod_2_6_gauge
+            7:
+              correction: 170
+              alias: rod_1_4_gauge
     pca9635RGBJBOL_boards: [ 0, 1 ] # Board addresses (aka ARDUBUS_PCA9635RGBJBOL_BOARDS)
     pca9635RGBJBOL_maps:
         0: # board address, upper "rod" leds
