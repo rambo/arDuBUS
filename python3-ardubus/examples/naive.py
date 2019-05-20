@@ -40,9 +40,9 @@ def mainloop(serialpath, configfile, loglevel, device_name='rod_control_panel'):
     local_aliases = ardubus_core.deviceconfig.ALIAS_MAP[device_name]
     # Init transport and wrap for blocking access
     transport_aio = ardubus_core.transport.get(serialpath, ardubus_core.deviceconfig.FULL_CONFIG_MAP[device_name])
+    transport_aio.events_callback = event_callback
     transport = AIOWrapper(transport_aio)
     # Set the event callback
-    transport.events_callback = event_callback
 
     # Get the rod signal aliases and use them to populate the state dicts
     for alias in local_aliases:
@@ -61,6 +61,7 @@ def mainloop(serialpath, configfile, loglevel, device_name='rod_control_panel'):
     next_tick = time.time()
     KEEP_RUNNING = True
     try:
+        gauge_last_full_update = 0
         while KEEP_RUNNING:
             # Wait for next tick, yield CPU with sleep(0) without hurting responsiveness
             if time.time() < next_tick:
@@ -71,16 +72,27 @@ def mainloop(serialpath, configfile, loglevel, device_name='rod_control_panel'):
 
             # Check the directions, apply accordingly
             for gauge_key in GAUGE_VALUES:
+                changed = False
                 up_alias = gauge_key.replace('_gauge', '_up')
                 dn_alias = gauge_key.replace('_gauge', '_down')
 
                 # Apply changes if the signals are set
                 if GAUGE_DIRECTIONS[dn_alias]:
                     GAUGE_VALUES[gauge_key] -= GAUGE_TICK_MOVE
+                    changed = True
                 if GAUGE_DIRECTIONS[up_alias]:
                     GAUGE_VALUES[gauge_key] += GAUGE_TICK_MOVE
+                    changed = True
                 if GAUGE_DIRECTIONS[dn_alias] and GAUGE_DIRECTIONS[up_alias]:
                     LOGGER.error('Gauge {} has both up and down signals set, this should not happen'.format(gauge_key))
+
+                # Force gauge update every 2s even if there are no changes
+                if time.time() - gauge_last_full_update > 2:
+                    changed = True
+                    gauge_last_full_update = time.time()
+
+                if not changed:
+                    continue
 
                 # Limit the values
                 if GAUGE_VALUES[gauge_key] < GAUGE_VALUE_LIMITS[0]:
@@ -90,8 +102,14 @@ def mainloop(serialpath, configfile, loglevel, device_name='rod_control_panel'):
                     LOGGER.info('Gauge {} value limited to {}'.format(gauge_key, GAUGE_VALUE_LIMITS[1]))
                     GAUGE_VALUES[gauge_key] = GAUGE_VALUE_LIMITS[1]
 
+                # Sanity-check
+                if gauge_key not in local_aliases:
+                    LOGGER.error('{} not in alias map!'.format(gauge_key))
+                    continue
+
                 # And send the value to the HW
                 local_aliases[gauge_key]['BPROXY'].set_value(GAUGE_VALUES[gauge_key])
+            # Mainloop continued if we want to do something else
 
     except KeyboardInterrupt:
         LOGGER.info('KeyboardInterrupt, shutting down')
