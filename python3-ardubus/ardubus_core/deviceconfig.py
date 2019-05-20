@@ -163,7 +163,7 @@ def normalize_aircore_boards(devicename, transport=None):  # pylint: disable=R09
     if 'aircore_correction_values' not in config:
         config['aircore_correction_values'] = {}
     for idx, _ in enumerate(config['aircore_boards']):
-        if idx not in config['pca9635RGBJBOL_maps']:
+        if idx not in config['aircore_correction_values']:
             config['aircore_correction_values'][idx] = {}
 
     for board_idx in config['aircore_correction_values']:
