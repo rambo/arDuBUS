@@ -15,6 +15,7 @@ real world. Also handles `devices.yml` loading/normalizing.
     loop = asyncio.get_event_loop()
     from ardubus_core import deviceconfig, transport, init_logging
     from ardubus_core.aiowrapper import AIOWrapper
+    from ardubus_core.events import Change
 
     # Setup logging 20=info
     init_logging(20)
@@ -28,10 +29,17 @@ real world. Also handles `devices.yml` loading/normalizing.
     def throw_away(*args, **kwargs):
         return
 
+    # Callback handler that prints changes
+    def changes_only(event):
+        if not isinstance(event, Change):
+            return
+        print(repr(event))
+
     # Init the transport
     tr = transport.get('/dev/tty.usbserial-A600clwx', deviceconfig.FULL_CONFIG_MAP['rod_control_panel'])
     # Ignore events for now, comment out to see the warnings for missing callback
-    tr.events_callback = throw_away
+    #tr.events_callback = throw_away
+    tr.events_callback = changes_only
 
     # Normal asyncio stuff
     loop.run_until_complete(panelcfg['pca9635RGBJBOL_maps'][1][0]['PROXY'].set_value(255))
