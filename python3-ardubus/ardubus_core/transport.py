@@ -82,6 +82,7 @@ class SerialTransport(BaseTransport):
     serialhandler = None
     events_callback = None
     device_name = None
+    command_wait_response = True
 
     def __init__(self, serial_device, device_config_map, *args, **kwargs):
         self.device_config_map = device_config_map
@@ -184,6 +185,10 @@ class SerialTransport(BaseTransport):
         if not self.serialhandler or not self.serialhandler.is_alive():
             raise TransportError('Serial handler not ready')
         with await self.lock:
+            if not self.command_wait_response:
+                self.serialhandler.protocol.write_packet(command)
+                return
+
             response = None
 
             def set_response(message):
