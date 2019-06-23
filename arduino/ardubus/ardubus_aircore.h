@@ -1,6 +1,6 @@
 #ifndef ardubus_aircore_h
 #define ardubus_aircore_h
-#include <Arduino.h> 
+#include <Arduino.h>
 #include <i2c_device.h>
 
 // Enumerate the aircore pins from the preprocessor
@@ -32,11 +32,15 @@ inline void ardubus_aircore_process_command(char *incoming_command)
     switch(incoming_command[0])
     {
         case 0x41: // ASCII "A" (A<indexbyte><motorbyte><value>) //Note that the indexbyte is index of the aircores-array, not pin number, ledbyte is the number of the led on the board
-            ardubus_aircores[incoming_command[1]-ARDUBUS_INDEX_OFFSET].write(incoming_command[2]-ARDUBUS_INDEX_OFFSET, incoming_command[3]);
+            bool status = ardubus_aircores[incoming_command[1]-ARDUBUS_INDEX_OFFSET].write(incoming_command[2]-ARDUBUS_INDEX_OFFSET, incoming_command[3]);
             Serial.print(F("A"));
             Serial.print(incoming_command[1]);
             Serial.print(incoming_command[2]);
             Serial.print(incoming_command[3]);
+            if (!status)
+            {
+              return ardubus_nack();
+            }
             return ardubus_ack();
             break;
     }

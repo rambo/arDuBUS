@@ -1,11 +1,11 @@
 #ifndef ardubus_pca9535_out_h
 #define ardubus_pca9535_out_h
-#include <Arduino.h> 
+#include <Arduino.h>
 #include "ardubus_pca9535_common.h"
 #include <pca9535.h>
 
 // Enumerate the input pins from the preprocessor (from pin numbers 0 to N, will run across the ARDUBUS_PCA9535_BOARDS array [so pin 16 is portA pin 0 on index 1 of ardubus_pca9535_boards])
-const byte ardubus_pca9535_out_pins[] = ARDUBUS_PCA9535_OUTPUTS; 
+const byte ardubus_pca9535_out_pins[] = ARDUBUS_PCA9535_OUTPUTS;
 
 inline void ardubus_pca9535_out_setup()
 {
@@ -33,17 +33,22 @@ inline void ardubus_pca9535_out_process_command(char *incoming_command)
     {
         case 0x45: // ASCII "E" (D<pinbyte><statebyte>) //The pin must have been declared in ardubus_pca9535_out_pins or unexpected things will happen
             byte pin = ardubus_pca9535_out_pins[incoming_command[1]-ARDUBUS_INDEX_OFFSET];
+            bool status;
             if (incoming_command[2] == 0x31) // ASCII "1"
             {
-                ardubus_pca9535s[ardubus_pca9535_pin2board_idx(pin)].digitalWrite((pin % 16), HIGH);
+                status = ardubus_pca9535s[ardubus_pca9535_pin2board_idx(pin)].digitalWrite((pin % 16), HIGH);
             }
             else
             {
-                ardubus_pca9535s[ardubus_pca9535_pin2board_idx(pin)].digitalWrite((pin % 16), LOW);
+                status = ardubus_pca9535s[ardubus_pca9535_pin2board_idx(pin)].digitalWrite((pin % 16), LOW);
             }
             Serial.print(F("E"));
             Serial.print(incoming_command[1]);
             Serial.print(incoming_command[2]);
+            if (!status)
+            {
+              return ardubus_nack();
+            }
             return ardubus_ack();
             break;
     }
