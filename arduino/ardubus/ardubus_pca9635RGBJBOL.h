@@ -32,14 +32,20 @@ inline void ardubus_pca9635RGBJBOL_process_command(char *incoming_command)
     switch(incoming_command[0])
     {
         case 0x6A: // ASCII "j" reset all PCA9635 devices
-            bool status = PCA9635.reset();
+        {
+            bool status2 = PCA9635.reset();
+            bool status3 = PCA9635.set_driver_mode(0x0);
+            bool status4 = PCA9635.set_sleep(0x0);
             Serial.print(F("j"));
-            if (!status)
+            if (!status2 || ! status3 || !status4)
             {
               return ardubus_nack();
             }
             return ardubus_ack();
+            break;
+        }
         case 0x4A: // ASCII "J" (J<indexbyte><ledbyte><value>) //Note that the indexbyte is index of the pca9635RGBJBOLs-array, not pin number, ledbyte is the number of the led on the board
+        {
             bool status = ardubus_pca9635RGBJBOLs[incoming_command[1]-ARDUBUS_INDEX_OFFSET].set_led_pwm(incoming_command[2]-ARDUBUS_INDEX_OFFSET, incoming_command[3]);
             Serial.print(F("J"));
             Serial.print(incoming_command[1]);
@@ -51,6 +57,7 @@ inline void ardubus_pca9635RGBJBOL_process_command(char *incoming_command)
             }
             return ardubus_ack();
             break;
+        }
     }
 }
 
