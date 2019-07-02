@@ -166,9 +166,11 @@ class SerialTransport(BaseTransport):
             event = AnalogPinStatus(self.device_config_map, idx=input_buffer[2],
                                     value=int(input_buffer[3:7], 16), reported_ms=int(input_buffer[6:15], 16))
 
-        if input_buffer[0] in b'PDAJWBEwsS':
+        if input_buffer[0] in b'PDAJjWBEwsS':
             # Command status that we missed
             LOGGER.debug('Missed command (n)ack {}'.format(repr(input_buffer)))
+            if input_buffer[-1] == 21:
+                LOGGER.warning('Missed command NACK {}'.format(repr(input_buffer)))
             return
 
         if event is None:

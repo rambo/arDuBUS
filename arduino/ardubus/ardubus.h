@@ -1,6 +1,6 @@
 #ifndef ardubus_h
 #define ardubus_h
-#include <Arduino.h> 
+#include <Arduino.h>
 #ifndef ARDUBUS_REPORT_INTERVAL
 #define ARDUBUS_REPORT_INTERVAL 5000 // Milliseconds
 #endif
@@ -20,7 +20,7 @@ inline byte ardubus_hex2byte(byte hexchar)
     if (   0x40 < hexchar
         && hexchar < 0x47) // A-F
     {
-        return (hexchar - 0x41) + 10; 
+        return (hexchar - 0x41) + 10;
     }
     if (   0x2f < hexchar
         && hexchar < 0x3a) // 0-9
@@ -28,7 +28,7 @@ inline byte ardubus_hex2byte(byte hexchar)
         return (hexchar - 0x30);
     }
     return 0x0; // Failure.
-    
+
 }
 
 inline byte ardubus_hex2byte(byte hexchar0, byte hexchar1)
@@ -52,6 +52,11 @@ inline void ardubus_ack()
     */
     // This ought to work too
     Serial.println(0x6);
+}
+
+inline void ardubus_nack()
+{
+    Serial.println(0x15); // NACK
 }
 
 // Utility functions for outputting fixed lenght nex encoded numbers
@@ -297,7 +302,7 @@ inline void ardubus_read_command_bytes()
             Serial.print(F("PANIC: No end-of-line seen and ardubus_incoming_position="));
             Serial.print(ardubus_incoming_position, DEC);
             Serial.println(F(" clearing buffers"));
-            
+
             memset(&ardubus_incoming_command, 0, ARDUBUS_COMMAND_STRING_SIZE+2);
             ardubus_incoming_position = 0;
         }

@@ -1,6 +1,6 @@
 #ifndef ardubus_pca9635RGBJBOL_h
 #define ardubus_pca9635RGBJBOL_h
-#include <Arduino.h> 
+#include <Arduino.h>
 #include <pca9635RGBJBOL.h>
 
 // Enumerate the pca9635RGBJBOL pins from the preprocessor
@@ -31,12 +31,24 @@ inline void ardubus_pca9635RGBJBOL_process_command(char *incoming_command)
 {
     switch(incoming_command[0])
     {
+        case 0x6A: // ASCII "j" reset all PCA9635 devices
+            bool status = PCA9635.reset();
+            Serial.print(F("j"));
+            if (!status)
+            {
+              return ardubus_nack();
+            }
+            return ardubus_ack();
         case 0x4A: // ASCII "J" (J<indexbyte><ledbyte><value>) //Note that the indexbyte is index of the pca9635RGBJBOLs-array, not pin number, ledbyte is the number of the led on the board
-            ardubus_pca9635RGBJBOLs[incoming_command[1]-ARDUBUS_INDEX_OFFSET].set_led_pwm(incoming_command[2]-ARDUBUS_INDEX_OFFSET, incoming_command[3]);
+            bool status = ardubus_pca9635RGBJBOLs[incoming_command[1]-ARDUBUS_INDEX_OFFSET].set_led_pwm(incoming_command[2]-ARDUBUS_INDEX_OFFSET, incoming_command[3]);
             Serial.print(F("J"));
             Serial.print(incoming_command[1]);
             Serial.print(incoming_command[2]);
             Serial.print(incoming_command[3]);
+            if (!status)
+            {
+              return ardubus_nack();
+            }
             return ardubus_ack();
             break;
     }
