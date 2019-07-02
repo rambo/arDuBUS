@@ -91,6 +91,12 @@ class JBOLLedProxy(BaseProxy):
     board_idx = 0
     ledno = 0
 
+    async def reset(self):
+        """Reset all PCA9635 devices on the bus"""
+        if not self.transport:
+            raise RuntimeError('Transport must be set to use this method')
+        return await self.transport.send_command(b'j')
+
     def encode_value(self, value):
         """the value is the LED PWM"""
         return b'J' + idx2byte(self.board_idx) + idx2byte(self.ledno) + value2safebyte(value)
